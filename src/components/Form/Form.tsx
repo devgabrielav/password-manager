@@ -1,4 +1,10 @@
-function Form() {
+import { ButtonHTMLAttributes } from 'react';
+
+type ButtonProps = {
+  id: string;
+} & ButtonHTMLAttributes<HTMLButtonElement>;
+
+function Form({ ...rest }: ButtonProps) {
   return (
     <form action="">
       <label htmlFor="service">Nome do Serviço</label>
@@ -10,7 +16,7 @@ function Form() {
       <label htmlFor="url">URL</label>
       <input type="text" id="url" />
       <button>Cadastrar</button>
-      <button>Cancelar</button>
+      <button { ...rest }>Cancelar</button>
     </form>
   );
 }
