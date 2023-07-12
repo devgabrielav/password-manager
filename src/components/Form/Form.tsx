@@ -1,5 +1,4 @@
 import { ButtonHTMLAttributes, useState } from 'react';
-import validator from 'validator';
 
 type ButtonProps = {
   id: string;
@@ -22,24 +21,20 @@ function Form({ ...rest }: ButtonProps) {
 
   const [changeButton, setChangeButton] = useState(true);
 
-  const validar = validator.isStrongPassword(inputValue.senha, {
-    minLength: 8,
-    minLowercase: 1,
-    minUppercase: 0,
-    minNumbers: 1,
-    minSymbols: 1,
-    returnScore: false,
-    pointsPerUnique: 0,
-    pointsPerRepeat: 0,
-    pointsForContainingLower: 0,
-    pointsForContainingUpper: 0,
-    pointsForContainingNumber: 0,
-    pointsForContainingSymbol: 0,
-  });
-
-  const validaInputs = inputValue.service.length > 0 && inputValue.login.length > 0
-    && inputValue.senha.length > 7 && inputValue.senha.length <= 16
-    && validar === true;
+  const letterRegex = /.*[A-Za-z]/;
+  const numberRegex = /.*\d/;
+  const minlengthRegex = /^[a-zA-Z0-9!@#$%^&*)(+=._-]{8,50}$/;
+  const maxlengthRegex = /^[a-zA-Z0-9!@#$%^&*)(+=._-]{8,16}$/;
+  const specialChar = /.*[!@#$%^&*)(+=._-]/;
+  const validateAll = new RegExp(
+    `^(?=${[
+      minlengthRegex.source,
+      maxlengthRegex.source,
+      letterRegex.source,
+      numberRegex.source,
+      specialChar.source,
+    ].join(')(?=')}).*$`,
+  );
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -47,12 +42,21 @@ function Form({ ...rest }: ButtonProps) {
       ...inputValue,
       [name]: value,
     });
-    if (validaInputs) {
+    if (inputValue.senha.match(validateAll.source)
+      && inputValue.login.length > 0
+      && inputValue.service.length > 0) {
       setChangeButton(false);
     } else {
       setChangeButton(true);
     }
   };
+
+  const mustHave = [
+    { label: 'Possuir 8 ou mais caracteres', pattern: minlengthRegex },
+    { label: 'Possuir até 16 caracteres', pattern: maxlengthRegex },
+    { label: 'Possuir letras e números', pattern: numberRegex },
+    { label: 'Possuir algum caractere especial', pattern: specialChar },
+  ];
 
   return (
     <form action="">
@@ -67,7 +71,13 @@ function Form({ ...rest }: ButtonProps) {
 
       <label htmlFor="url">URL</label>
       <input type="text" id="url" name="url" onChange={ handleChange } />
-
+      {
+        mustHave.map((rule) => {
+          const valor = inputValue.senha.match(rule.pattern.source)
+            ? 'valid-password-check' : 'invalid-password-check';
+          return <p className={ valor } key={ rule.label }>{ rule.label }</p>;
+        })
+      }
       <button disabled={ changeButton } id="confirm" type="submit">
         Cadastrar
       </button>
