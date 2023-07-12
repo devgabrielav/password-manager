@@ -22,6 +22,7 @@ function App() {
       <Title />
       {showForm && <Form id="cancel" onClick={ handleCancel } />}
       {showButton && <button onClick={ handleCLick }>Cadastrar nova senha</button>}
+      {showButton && <p>Nenhuma senha cadastrada</p>}
     </>
   );
 }
