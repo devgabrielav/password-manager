@@ -1,4 +1,5 @@
 import { ButtonHTMLAttributes, useState } from 'react';
+import Swal from 'sweetalert2';
 
 type ButtonProps = {
   id: string;
@@ -110,6 +111,16 @@ function Form({ ...rest }: ButtonProps) {
     setIsChecked(event.target.checked);
   };
 
+  const alerta = () => {
+    Swal.fire({
+      position: 'top-end',
+      icon: 'success',
+      title: 'Serviço cadastrado com sucesso',
+      showConfirmButton: false,
+      timer: 1500,
+    });
+  };
+
   return (
     <>
       {showForm && (
@@ -134,7 +145,9 @@ function Form({ ...rest }: ButtonProps) {
               return <p className={ valor } key={ rule.label }>{ rule.label }</p>;
             })
           }
-          <button disabled={ changeButton } id="confirm" type="submit">Cadastrar</button>
+          <button disabled={ changeButton } id="confirm" type="submit" onClick={ alerta }>
+            Cadastrar
+          </button>
           <button { ...rest } id="cancel">Cancelar</button>
         </form>)}
       <label htmlFor="check">Esconder senhas</label>
