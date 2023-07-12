@@ -91,6 +91,10 @@ function Form({ ...rest }: ButtonProps) {
     { label: 'Possuir algum caractere especial', pattern: specialChar },
   ];
 
+  const delCad = (chave: string) => {
+    setAdicionaCadastro(adicionaCadastro.filter((password) => password.chave !== chave));
+  };
+
   return (
     <>
       {showForm && (
@@ -124,6 +128,9 @@ function Form({ ...rest }: ButtonProps) {
         {showCadastros && adicionaCadastro.length > 0
           ? (adicionaCadastro.map((cadastro) => (
             <div key={ cadastro.chave }>
+              <button data-testid="remove-btn" onClick={ () => delCad(cadastro.chave) }>
+                x
+              </button>
               <a href={ cadastro.url }>{ cadastro.link }</a>
               <p>{ cadastro.renderLogin }</p>
               <p>{ cadastro.renderSenha }</p>
