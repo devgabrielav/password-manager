@@ -30,6 +30,7 @@ function Form({ ...rest }: ButtonProps) {
   const [showForm, setShowForm] = useState(true);
   const [buttonShow, setButtonShow] = useState(false);
   const [showCadastros, setShowCadastros] = useState(true);
+  const [isChecked, setIsChecked] = useState(false);
 
   const cadastrar = (event: React.FormEvent<HTMLFormElement>) => {
     const keys = Date.now();
@@ -95,6 +96,10 @@ function Form({ ...rest }: ButtonProps) {
     setAdicionaCadastro(adicionaCadastro.filter((password) => password.chave !== chave));
   };
 
+  const hidePass = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setIsChecked(event.target.checked);
+  };
+
   return (
     <>
       {showForm && (
@@ -120,6 +125,14 @@ function Form({ ...rest }: ButtonProps) {
           <button disabled={ changeButton } id="confirm" type="submit">Cadastrar</button>
           <button { ...rest } id="cancel">Cancelar</button>
         </form>)}
+      <label htmlFor="check">Esconder senhas</label>
+      <input
+        type="checkbox"
+        name="check"
+        id="check"
+        checked={ isChecked }
+        onChange={ hidePass }
+      />
       <div>
         {buttonShow && (
           <button { ...rest } onClick={ newCadastroButton }>
@@ -133,7 +146,7 @@ function Form({ ...rest }: ButtonProps) {
               </button>
               <a href={ cadastro.url }>{ cadastro.link }</a>
               <p>{ cadastro.renderLogin }</p>
-              <p>{ cadastro.renderSenha }</p>
+              <p>{isChecked ? '******' : (cadastro.renderSenha)}</p>
             </div>
           ))) : 'Nenhuma senha cadastrada'}
       </div>
