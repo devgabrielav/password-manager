@@ -31,6 +31,7 @@ function Form({ ...rest }: ButtonProps) {
   const [buttonShow, setButtonShow] = useState(false);
   const [showCadastros, setShowCadastros] = useState(true);
   const [isChecked, setIsChecked] = useState(false);
+  const [typeInput, setTypeInput] = useState('password');
 
   const cadastrar = (event: React.FormEvent<HTMLFormElement>) => {
     const keys = Date.now();
@@ -69,6 +70,15 @@ function Form({ ...rest }: ButtonProps) {
       specialChar.source,
     ].join(')(?=')}).*$`,
   );
+
+  const changeTypeInput = (event: any) => {
+    event.preventDefault();
+    if (typeInput === 'password') {
+      setTypeInput('text');
+    } else {
+      setTypeInput('password');
+    }
+  };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -111,8 +121,10 @@ function Form({ ...rest }: ButtonProps) {
           <input type="text" id="login" name="login" onChange={ handleChange } />
 
           <label htmlFor="senha">Senha</label>
-          <input type="password" name="senha" id="senha" onChange={ handleChange } />
-
+          <input type={ typeInput } name="senha" id="senha" onChange={ handleChange } />
+          <button data-testid="show-hide-form-password" onClick={ changeTypeInput }>
+            👁
+          </button>
           <label htmlFor="url">URL</label>
           <input type="text" id="url" name="url" onChange={ handleChange } />
           {
