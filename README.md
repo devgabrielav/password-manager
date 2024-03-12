@@ -1,10 +1,35 @@
-# :construction: README em construção ! :construction:
-<!-- Olá, Tryber!
-Esse é apenas um arquivo inicial para o README do seu projeto.
-É essencial que você preencha esse documento por conta própria, ok?
-Não deixe de usar nossas dicas de escrita de README de projetos, e deixe sua criatividade brilhar!
-:warning: IMPORTANTE: você precisa deixar nítido:
-- quais arquivos/pastas foram desenvolvidos por você; 
-- quais arquivos/pastas foram desenvolvidos por outra pessoa estudante;
-- quais arquivos/pastas foram desenvolvidos pela Trybe.
--->
+# Project Password Manager
+
+# Context
+This is a Frontend project made after my firsts lessons on Typescript and React.
+
+On this application, the objective is to develop a password manager. By using this application, the user is able to:
+
+- Register passwords for services she uses on the internet.
+
+- View your own registered passwords and information about the service used.
+
+- Hide saved passwords.
+
+- Remove previously stored data.
+
+## Used technologies
+
+Front-end:
+> Developed using: Typescript, Vite, React DOM, Validator, Sweet Alert and ESLint for more organized code.
+
+## Installing Dependencies
+
+> After cloning the project
+
+```bash
+cd password-manager
+npm install
+```
+
+## Running the application
+
+    
+  ```
+  npm run dev
+  ```
