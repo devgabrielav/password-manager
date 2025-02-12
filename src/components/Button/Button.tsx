@@ -1,4 +1,4 @@
-import { ButtonPropsType } from "../Types/ButtonTypes";
+import { ButtonPropsType } from "../../Types/ButtonTypes";
 
 function Button(items: ButtonPropsType) {
   const { title, buttonFunction } = items;
