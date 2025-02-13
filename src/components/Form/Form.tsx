@@ -1,14 +1,14 @@
 import { useState } from "react";
 import Button from "../Button/Button";
 import { FormType } from "../../Types/FormTypes";
-import { enableButton, initialFormContent } from "../../utils/FormUtils";
+import { enableButton, initialFormContent, savePassToLocal } from "../../utils/FormUtils";
 import Input from "../Input/Input";
-
+import PasswordValidation from "../PasswordValidation/PasswordValidation";
 
 function Form() {
   const [showForm, setShowForm] = useState<boolean>(false);
-  const [buttonDisabled, setButtonDisabled] = useState<boolean>(true);
   const [formContent, setFormContent] = useState<FormType>(initialFormContent);
+  const [passwordType, setPasswordType] = useState<string>('password');
 
   const inputChanges = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -17,10 +17,7 @@ function Form() {
       ...formContent,
       [name]: value
     })
-
-    enableButton({ formContent, setFunction: setButtonDisabled })
   }
-
 
   return (
     <>
@@ -43,10 +40,18 @@ function Form() {
         <Input
           id="password"
           name="password"
-          type="password"
+          type={ passwordType }
           onChangeFunction={ inputChanges }
           title="Password"
         />
+        <Input
+          id="showPassword"
+          name="showPassword"
+          type='checkbox'
+          onChangeFunction={() => passwordType == 'password' ? setPasswordType('text') : setPasswordType('password') }
+          title="Show Password"
+        />
+
         <Input
           id="url"
           name="url"
@@ -55,10 +60,25 @@ function Form() {
           title="URL"
         />
 
-        <button disabled={ buttonDisabled }>Submit</button>
-        <Button title="Cancel" buttonFunction={ () => setShowForm(false) }/>
+        <Button
+          title="Submit"
+          buttonFunction={ () => savePassToLocal(formContent)  }
+          isDisabled={ enableButton(formContent) ? false : true }
+        />
+        <Button
+          title="Cancel"
+          buttonFunction={ () => setShowForm(false) }
+          isDisabled={ false }
+        />
+
+        <PasswordValidation password={ formContent.password }/>
+        
       </form>) : (
-        <Button title="Submit new password" buttonFunction={ () => setShowForm(true) } />
+        <Button
+          title="Submit new password"
+          buttonFunction={ () => setShowForm(true) }
+          isDisabled={ false }
+        />
       )
     }
     </>

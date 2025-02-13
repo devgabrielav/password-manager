@@ -1,9 +1,9 @@
 import { ButtonPropsType } from "../../Types/ButtonTypes";
 
 function Button(items: ButtonPropsType) {
-  const { title, buttonFunction } = items;
+  const { title, buttonFunction, isDisabled } = items;
   return (
-    <button onClick={ buttonFunction } >{ title }</button>
+    <button onClick={ buttonFunction } disabled={ isDisabled } >{ title }</button>
   )
 }
 

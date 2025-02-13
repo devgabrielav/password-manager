@@ -1,3 +1,4 @@
+import Swal from "sweetalert2";
 import { FormType } from "../Types/FormTypes";
 
 export const initialFormContent: FormType = {
@@ -7,14 +8,9 @@ export const initialFormContent: FormType = {
   url: '',
 };
 
-type EnableButtonFunctionType = {
-  formContent: FormType;
-  setFunction: (value: React.SetStateAction<boolean>) => void
-}
-
-const specialCharRegex = /^[a-zA-Z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]*$/;
-const numberRegex = /[0-9]/;
-const letterRegex = /[a-zA-Z]/;
+export const specialCharRegex = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/;
+export const numberRegex = /[0-9]/;
+export const letterRegex = /[a-zA-Z]/;
 
 
 const passwordValidations = (password: string) => {
@@ -26,16 +22,44 @@ const passwordValidations = (password: string) => {
   return false;
 }
 
-export const enableButton = ({formContent, setFunction}: EnableButtonFunctionType) => {
+export const enableButton = (formContent: FormType) => {
   const { serviceName, login, password } = formContent;
   
   if (serviceName.trim().length !== 0 && login.trim().length !== 0 && password.trim().length !== 0) {
     if (passwordValidations(password)) {
-      setFunction(false);
+      return true;
     } else {
-      setFunction(true);
+      return false;
     }
   } else {
-    setFunction(true);
+    return false;
   }
+}
+
+export const alertConfig = Swal.fire({
+  position: "center",
+  icon: "success",
+  title: "Service added successfully!",
+  showConfirmButton: false,
+  timer: 1500
+});
+
+export const savePassToLocal = (formContent: FormType) => {
+  const localSavedPasswords = JSON.parse(localStorage.getItem('passwords') || '[]');
+  localStorage.setItem('passwords', JSON.stringify([...localSavedPasswords, formContent]));
+  alertConfig;
+}
+
+type RemovePassType = {
+  formContent: FormType;
+  setChange: React.Dispatch<React.SetStateAction<[] | FormType[]>>;
+}
+
+export const removePassFromLocal = ({ formContent, setChange }: RemovePassType) => {
+  const localSavedPasswords: FormType[] | [] = JSON.parse(localStorage.getItem('passwords') || '[]');
+  const removedItem = localSavedPasswords.filter((item) => (item.login != formContent.login) && (item.serviceName != formContent.serviceName));
+
+  localStorage.setItem('passwords', JSON.stringify(removedItem));
+  const updatedLocalSavedPasswords: FormType[] | [] = JSON.parse(localStorage.getItem('passwords') || '[]');
+  setChange(updatedLocalSavedPasswords);
 }
