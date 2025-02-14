@@ -1,14 +1,16 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Button from "../Button/Button";
 import { FormType } from "../../Types/FormTypes";
 import { enableButton, initialFormContent, savePassToLocal } from "../../utils/FormUtils";
 import Input from "../Input/Input";
 import PasswordValidation from "../PasswordValidation/PasswordValidation";
+import { PasswordsContext } from "../../context/PasswordsContext";
 
 function Form() {
   const [showForm, setShowForm] = useState<boolean>(false);
   const [formContent, setFormContent] = useState<FormType>(initialFormContent);
   const [passwordType, setPasswordType] = useState<string>('password');
+  const { setPasswords } = useContext(PasswordsContext);
 
   const inputChanges = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -19,10 +21,18 @@ function Form() {
     })
   }
 
+  const submitFunction = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const newArray = savePassToLocal(formContent);
+    setShowForm(false);
+    setPasswords(newArray);
+    setFormContent(initialFormContent);
+  }
+
   return (
     <>
     {showForm ? 
-      (<form action="">
+      (<form action="" onSubmit={ submitFunction }>
         <Input
           id="serviceName"
           name="serviceName"
@@ -62,7 +72,6 @@ function Form() {
 
         <Button
           title="Submit"
-          buttonFunction={ () => savePassToLocal(formContent)  }
           isDisabled={ enableButton(formContent) ? false : true }
         />
         <Button

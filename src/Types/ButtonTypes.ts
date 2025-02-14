@@ -1,5 +1,5 @@
 export type ButtonPropsType = {
   title: string;
-  buttonFunction: () => void;
+  buttonFunction?: () => void;
   isDisabled: boolean;
 }

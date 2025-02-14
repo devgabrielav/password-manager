@@ -1,12 +1,13 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { FormType } from "../../Types/FormTypes";
 import { removePassFromLocal } from "../../utils/FormUtils";
 import Button from "../Button/Button";
 import Input from "../Input/Input";
+import { PasswordsContext } from "../../context/PasswordsContext";
 
 function Passwords() {
-  const [passwords, setPasswords] = useState<FormType[] | []>([]);
   const [showPass, setShowPass] = useState<boolean>(false);
+  const { passwords, setPasswords } = useContext(PasswordsContext);
   
   useEffect(() => {
     const localSavedPasswords = localStorage.getItem('passwords') || '[]';
@@ -32,7 +33,7 @@ function Passwords() {
       {passwords.map((password) => (
         <div key={ password.serviceName }>
           {password.url.length > 0 ? (
-            <a href={ password.url }>{password.serviceName}</a>
+            <a href={ password.url } target="_blank">{password.serviceName}</a>
             ) : (
             <span>{password.serviceName}</span>
             )

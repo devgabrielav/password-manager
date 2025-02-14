@@ -36,18 +36,20 @@ export const enableButton = (formContent: FormType) => {
   }
 }
 
-export const alertConfig = Swal.fire({
-  position: "center",
-  icon: "success",
-  title: "Service added successfully!",
-  showConfirmButton: false,
-  timer: 1500
-});
-
 export const savePassToLocal = (formContent: FormType) => {
   const localSavedPasswords = JSON.parse(localStorage.getItem('passwords') || '[]');
-  localStorage.setItem('passwords', JSON.stringify([...localSavedPasswords, formContent]));
-  alertConfig;
+  const newPasswords = [...localSavedPasswords, formContent];
+  localStorage.setItem('passwords', JSON.stringify(newPasswords));
+
+  Swal.fire({
+    position: "center",
+    icon: "success",
+    title: "Service added successfully!",
+    showConfirmButton: false,
+    timer: 1500
+  });
+
+  return newPasswords;
 }
 
 type RemovePassType = {
